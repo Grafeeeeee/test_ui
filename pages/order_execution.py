@@ -1,0 +1,62 @@
+from locators import logins_form_locators as loc
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
+from pages.base_page import BasePage
+from selenium.webdriver.common.by import By
+
+
+class OrderExecution(BasePage):
+
+    def __init__(self, faker, wait):
+        super().__init__(faker, wait)
+
+    page_url = '/shop/furn-9999-office-design-software-7?category=9'
+
+    def add_product(self):
+        btn_add_cart = self.find(loc.btn_add_cart_loc)
+        btn_add_cart.click()
+
+    def check_indicator_addition_to_cart(self, wait):
+        cart_indicator = self.find(loc.cart_indicator_loc)
+        cart_indicator_text = cart_indicator.text
+        wait.until(lambda x: x.find_element(
+            By.CSS_SELECTOR,
+            ".my_cart_quantity.badge.text-bg-primary.position-absolute.top-0.end-0.mt-n1.me-n1.rounded-pill")
+                   .text != cart_indicator_text)
+        cart_indicator.click()
+
+    def order_registration(self):
+        checkout = self.find(loc.checkout_loc)
+        checkout.click()
+
+    def fill_in_form_to_delivery(self, wait, faker):
+        fullname = self.find(loc.fullname_loc)
+        fullname.send_keys(faker.name())
+        email = self.find(loc.email_loc)
+        email.send_keys(faker.email())
+        phone = self.find(loc.phone_loc)
+        phone.send_keys(faker.basic_phone_number())
+        company_name = self.find(loc.company_name_loc)
+        company_name.send_keys(faker.company())
+        vat = self.find(loc.vat_loc)
+        vat.send_keys('12521512')
+        street = self.find(loc.street_loc)
+        street.send_keys(faker.street_address())
+        street2 = self.find(loc.street2_loc)
+        street2.send_keys('None')
+        city = self.find(loc.city_loc)
+        city.send_keys(faker.city())
+        zip = self.find(loc.zip_loc)
+        zip.send_keys(faker.zipcode())
+        select_element = self.find(loc.select_element_loc)
+        select = Select(select_element)
+        select.select_by_value('190')
+        state = wait.until(EC.visibility_of_element_located(loc.state_loc))
+        select_state = Select(state)
+        select_state.select_by_value('108')
+        btn_checkout = self.find(loc.btn_checkout_loc)
+        btn_checkout.click()
+
+    def check_to_confirm_order(self, text):
+        assert self.find(loc.confirm_order_loc).text == text
+
