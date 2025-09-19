@@ -1,10 +1,5 @@
 from selenium.webdriver.common.by import By
 
-btn_add_cart_loc = (By.ID, 'add_to_cart')
-cart_indicator_loc = (
-            By.CSS_SELECTOR,
-            ".my_cart_quantity.badge.text-bg-primary.position-absolute.top-0.end-0.mt-n1.me-n1.rounded-pill")
-checkout_loc = (By.CSS_SELECTOR, '[name="website_sale_main_button"]')
 fullname_loc = (By.CSS_SELECTOR, '[name="name"]')
 email_loc = (By.CSS_SELECTOR, '[name="email"]')
 phone_loc = (By.CSS_SELECTOR, '[name="phone"]')

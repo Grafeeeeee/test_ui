@@ -1,33 +1,15 @@
-from locators import logins_form_locators as loc
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
 from pages.base_page import BasePage
-from selenium.webdriver.common.by import By
+from locators import fill_in_address_form as loc
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support import expected_conditions as EC
 
 
-class OrderExecution(BasePage):
+class FillAddressForm(BasePage):
 
-    def __init__(self, faker, wait):
-        super().__init__(faker, wait)
+    page_url = '/shop/address'
 
-    page_url = '/shop/furn-9999-office-design-software-7?category=9'
-
-    def add_product(self):
-        btn_add_cart = self.find(loc.btn_add_cart_loc)
-        btn_add_cart.click()
-
-    def check_indicator_addition_to_cart(self, wait):
-        cart_indicator = self.find(loc.cart_indicator_loc)
-        cart_indicator_text = cart_indicator.text
-        wait.until(lambda x: x.find_element(
-            By.CSS_SELECTOR,
-            ".my_cart_quantity.badge.text-bg-primary.position-absolute.top-0.end-0.mt-n1.me-n1.rounded-pill")
-                   .text != cart_indicator_text)
-        cart_indicator.click()
-
-    def order_registration(self):
-        checkout = self.find(loc.checkout_loc)
-        checkout.click()
+    def __init__(self, driver, wait, faker):
+        super().__init__(driver)
 
     def fill_in_form_to_delivery(self, wait, faker):
         fullname = self.find(loc.fullname_loc)
@@ -59,4 +41,3 @@ class OrderExecution(BasePage):
 
     def check_to_confirm_order(self, text):
         assert self.find(loc.confirm_order_loc).text == text
-

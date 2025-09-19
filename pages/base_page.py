@@ -6,7 +6,7 @@ class BasePage:
     base_url = 'http://testshop.qa-practice.com'
     page_url = None
 
-    def __init__(self, driver: WebDriver, wait):
+    def __init__(self, driver: WebDriver):
         self.driver = driver
 
     def open_page(self):
