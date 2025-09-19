@@ -5,7 +5,6 @@ from faker import Faker
 import pytest
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium import webdriver
-
 from pages.desk_categories import DeskCategories
 from pages.fill_address_form import FillAddressForm
 from pages.login_page import LoginPage
@@ -23,9 +22,7 @@ def generate_random_pass(length: int):
 
 @pytest.fixture
 def driver():
-    options = Options()
-    options.add_experimental_option('detach', True)
-    chrome_driver = webdriver.Chrome(options=options)
+    chrome_driver = webdriver.Chrome()
     chrome_driver.maximize_window()
     return chrome_driver
 
@@ -48,11 +45,6 @@ def office_design_software(driver, wait):
 @pytest.fixture()
 def order_overview(driver, wait):
     return OrderOverview(driver, wait)
-
-
-@pytest.fixture()
-def fill_address_form(driver, wait, faker):
-    return FillAddressForm(driver, wait, faker)
 
 
 @pytest.fixture()

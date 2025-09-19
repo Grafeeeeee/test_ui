@@ -39,5 +39,5 @@ class FillAddressForm(BasePage):
         btn_checkout = self.find(loc.btn_checkout_loc)
         btn_checkout.click()
 
-    def check_to_confirm_order(self, text):
+    def check_text_to_confirm_order(self, text):
         assert self.find(loc.confirm_order_loc).text == text

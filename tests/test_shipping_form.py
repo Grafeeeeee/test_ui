@@ -1,40 +1,39 @@
 import pytest
-from pages.order_overview import OrderOverview
 
 
-def test_correct_making_order(driver, wait, faker, office_design_software, fill_address_form):
+def test_correct_making_order(driver, wait, faker, office_design_software, fill_address_form, order_overview):
     btn_to_cart = office_design_software
     btn_to_cart.open_page()
     btn_to_cart.button_adding_element()
     btn_to_cart.check_indicator_addition_to_cart(wait)
-    checkout = OrderOverview(driver, wait)
+    checkout = order_overview
     checkout.click_button_checkout()
     fill_form = fill_address_form
     fill_form.fill_in_form_to_delivery(wait, faker)
-    fill_form.check_to_confirm_order('Confirm order')
+    fill_form.check_text_to_confirm_order('Confirm order')
 
 
 def test_correct_quantity_addition(driver, wait, office_design_software, order_overview):
     btn_to_cart = office_design_software
     btn_to_cart.open_page()
-    btn_to_cart.add_limit_quantity(5)
+    btn_to_cart.add_limit_quantity(5, wait)
     quantity = btn_to_cart.get_quantity(wait)
     btn_to_cart.button_adding_element()
     btn_to_cart.go_to_cart(wait)
-    order_view = OrderOverview(driver, quantity)  #
-    # никак не смог передать данный класс через фикстуру для передачи quantity
+    order_view = order_overview  #
+    # никак не смог передать данный класс через фикстуру для передачи quantity. PS : разобрался в чем было дело
     order_view.check_title_added_element('Order overview')
-    order_view.check_quantity_added_element()
+    order_view.check_quantity_added_element(quantity)
 
 
 def test_correct_go_to_cart(driver, wait, office_design_software, order_overview):
     btn_to_cart = office_design_software
     btn_to_cart.open_page()
     product = btn_to_cart.get_element_text_before()
-    order_view = OrderOverview(driver, product)
+    order_view = order_overview
     btn_to_cart.button_adding_element()
     btn_to_cart.click_btn_view_to_cart(wait)
-    order_view.check_get_added_element()
+    order_view.check_get_added_element(product)
 
 
 def test_correct_request_to_search_field(driver, wait, search_page):
@@ -77,12 +76,12 @@ def test_correct_filtered_by_price(driver, test_value, wait, category_desk):
     sort_by_price_range.check_price_of_received_items(test_value)
 
 
-def test_correct_adding_product_by_search(driver, wait, category_desk):
+def test_correct_adding_product_by_search(driver, wait, category_desk, order_overview):
     add_item_by_search = category_desk
     add_item_by_search.open_page()
     add_item_by_search.go_to_search_result(wait)
     add_item_by_search.switch_to_new_tab_and_get_text(wait)
     add_item_by_search.add_item_to_cart(wait)
     text = add_item_by_search.get_text_to_check()
-    check_text = OrderOverview(driver, text)
+    check_text = order_overview
     check_text.check_item_text(text)

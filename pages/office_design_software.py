@@ -17,15 +17,14 @@ class OfficeDesignSoftware(BasePage):
         btn_add_cart = self.find(loc.btn_add_cart_loc)
         btn_add_cart.click()
 
-    def add_limit_quantity(self, clicks):
+    def add_limit_quantity(self, clicks, wait):
         for _ in range(clicks):
-            add_quantity = self.find(loc.add_quantity_loc)
+            add_quantity = wait.until(EC.element_to_be_clickable(loc.add_quantity_loc))
             add_quantity.click()
 
     def get_quantity(self, wait):
         quantity = wait.until(EC.element_to_be_clickable(loc.quantity_loc))
         self.initial_quan_value = quantity.get_attribute('value')
-        print(self.initial_quan_value)
         return self.initial_quan_value
 
     def get_element_text_before(self):
