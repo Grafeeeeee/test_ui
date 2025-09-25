@@ -1,10 +1,7 @@
 import random
-from selenium.webdriver.chrome.options import Options
 import string
 from faker import Faker
 import pytest
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium import webdriver
 from pages.desk_categories import DeskCategories
 from pages.fill_address_form import FillAddressForm
 from pages.login_page import LoginPage
@@ -20,48 +17,36 @@ def generate_random_pass(length: int):
     return password
 
 
-@pytest.fixture
-def driver():
-    chrome_driver = webdriver.Chrome()
-    chrome_driver.maximize_window()
-    return chrome_driver
-
-
-@pytest.fixture()
-def wait(driver):
-    return WebDriverWait(driver, 10)
-
-
 @pytest.fixture()
 def faker():
     return Faker('en_US')
 
 
 @pytest.fixture()
-def office_design_software(driver, wait):
-    return OfficeDesignSoftware(driver, wait)
+def office_design_software(page):
+    return OfficeDesignSoftware(page)
 
 
 @pytest.fixture()
-def order_overview(driver, wait):
-    return OrderOverview(driver, wait)
+def order_overview(page):
+    return OrderOverview(page, expected_values=6)
 
 
 @pytest.fixture()
-def fill_address_form(driver, wait, faker):
-    return FillAddressForm(driver, wait, faker)
+def fill_address_form(page, faker):
+    return FillAddressForm(page, faker)
 
 
 @pytest.fixture()
-def search_page(driver, wait):
-    return SearchPage(driver, wait)
+def search_page(page):
+    return SearchPage(page)
 
 
 @pytest.fixture()
-def page_login_form(driver):
-    return LoginPage(driver)
+def page_login_form(page):
+    return LoginPage(page)
 
 
 @pytest.fixture()
-def category_desk(driver, wait):
-    return DeskCategories(driver, wait)
+def category_desk(page):
+    return DeskCategories(page)

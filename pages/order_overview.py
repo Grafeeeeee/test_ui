@@ -1,29 +1,26 @@
 from pages.base_page import BasePage
 from locators import order_overview as loc
+from playwright.sync_api import expect
 
 
 class OrderOverview(BasePage):
 
     page_url = '/shop/cart'
 
-    def __init__(self, driver, expected_values):
-        super().__init__(driver)
+    def __init__(self, page, expected_values):
+        super().__init__(page)
 
     def check_get_added_element(self, expected_values):
-        adding_element_after = self.find(loc.adding_element_after_loc)
-        assert adding_element_after.text == expected_values
+        expect(self.find(loc.adding_element_after_loc)).to_have_text(expected_values)
 
     def check_title_added_element(self, text):
-        order_text = self.find(loc.order_text_loc).text
-        assert order_text == text
+        expect(self.find(loc.order_text_loc)).to_have_text(text)
 
     def check_quantity_added_element(self, expected_values):
-        order_total_quantity = self.find(loc.order_total_quantity_loc)
-        assert order_total_quantity.get_attribute('value') == expected_values
+        expect(self.find(loc.order_total_quantity_loc)).to_have_attribute('value', str(expected_values))
 
     def check_item_text(self, text):
-        assert self.find(loc.check_text_loc).text == text
+        expect(self.find(loc.check_text_loc)).to_have_text(text)
 
     def click_button_checkout(self):
-        checkout = self.find(loc.checkout_loc)
-        checkout.click()
+        self.find(loc.checkout_loc).click()
