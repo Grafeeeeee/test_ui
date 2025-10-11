@@ -1,33 +1,51 @@
-name : Python autotests
+name: Run tests
 
-on:
+on: 
   workflow_dispatch:
     inputs:
       deployment_target:
         description: choose tests set
-        required: True
         type: choice
+        required: True
         default: smoke
         options:
           - smoke
           - regression
-          - extended
           - all
+          - extended
 
 jobs:
-  run-tests:
+  runs-tests:
     runs-on: ubuntu-latest
-    name: Run autotests
+    name: Run tests
     steps:
       - name: Check out autotests
-        uses : actions/checkout@v4
+        uses: actions/checkout@v4
       - name: Set up python enviroment
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
       - name: Install dependencies
         run: pip install -r requirements.txt
-      - name : playwright install
-        run : playwright install
-      - name: Run tests
-        run: pytest
+      - name: Playwright install
+        run: playwright install
+      - name: Install Allure
+        run: pip install allure-pytest
+      - name: Create allure directory
+        run: allure generate --alluredir="allure-results"
+      - name: run all tests
+        if: githun.event.inputs.deployment_target == "all"
+        run : pytest -m all
+      - name: run smoke tests
+        if: githun.event.inputs.deployment_target == "smoke"
+        run : pytest -m smoke
+      - name: run regression tests
+        if: githun.event.inputs.deployment_target == "regression"
+        run : pytest -m regression
+      - name: run extended tests
+        if: githun.event.inputs.deployment_target == "extended"
+        run : pytest -m extended
+      - name: Serve allure
+        run : allure serve /allure-results
+        
+        
