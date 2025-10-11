@@ -32,7 +32,7 @@ jobs:
       - name: Install Allure
         run: pip install allure-pytest
       - name: Create allure directory
-        run: allure generate --alluredir="allure-results"
+        run: pytest -v --alluredir=allure-results
       - name: run all tests
         if: "github.event.inputs.deployment_target == 'all'"
         run : pytest -m all
@@ -46,6 +46,6 @@ jobs:
         if: "github.event.inputs.deployment_target == 'extended'"
         run : pytest -m extended
       - name: Serve allure
-        run : allure serve /allure-results
+        run : allure serve allure-results/
         
         
