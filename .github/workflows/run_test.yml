@@ -14,6 +14,11 @@ on:
           - all
           - extended
 
+permissions:
+  contents: read
+  id-token: write
+  pages: write
+
 jobs:
   runs-tests:
     runs-on: ubuntu-latest
