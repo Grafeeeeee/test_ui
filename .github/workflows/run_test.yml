@@ -34,16 +34,16 @@ jobs:
       - name: Create allure directory
         run: allure generate --alluredir="allure-results"
       - name: run all tests
-        if: github.event.inputs.deployment_target == "all"
+        if: "github.event.inputs.deployment_target == 'all'"
         run : pytest -m all
       - name: run smoke tests
-        if: github.event.inputs.deployment_target == "smoke"
+        if: "github.event.inputs.deployment_target == 'smoke'"
         run : pytest -m smoke
       - name: run regression tests
-        if: github.event.inputs.deployment_target == "regression"
+        if: "github.event.inputs.deployment_target == 'regression'"
         run : pytest -m regression
       - name: run extended tests
-        if: github.event.inputs.deployment_target == "extended"
+        if: "github.event.inputs.deployment_target == 'extended'"
         run : pytest -m extended
       - name: Serve allure
         run : allure serve /allure-results
