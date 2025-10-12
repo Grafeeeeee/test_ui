@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Playwright install
-        run: playwright install
+        run: playwright install chromium
       - name: run all tests
         if: "github.event.inputs.deployment_target == 'all'"
         run : pytest -m all --alluredir=allure-results
@@ -51,7 +51,7 @@ jobs:
           distribution: 'microsoft'
           java-version: '17'
       - name: Install allure
-        run: sudo wget https://github.com/allure-framework/allure2/releases/tag/allure-2.35.1.tgz && sudo tar -zxvf allure-2.35.1.tgz -C /opt/ && sudo ln -s /opt/allure-2.35.1/bin/allure /usr/bin/allure
+        run: sudo wget https://github.com/allure-framework/allure2/releases/download/2.35.1/allure-2.35.1.tgz && sudo tar -zxvf allure-2.35.1.tgz -C /opt/ && sudo ln -s /opt/allure-2.35.1/bin/allure /usr/bin/allure
 
       - name: Generate allure report
         run : allure generate allure-results --clean -o _site
